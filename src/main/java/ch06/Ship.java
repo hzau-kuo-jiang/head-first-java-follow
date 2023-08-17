@@ -1,22 +1,22 @@
 package ch06;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Ship {
 	private final String name;
-	private ArrayList<HashMap<String, Integer>> shipLocations;
+	private ArrayList<Location> shipLocations;
 	
 	public Ship(String name) {
 		this.name = name;
-		this.shipLocations = new ArrayList<HashMap<String, Integer>>();
+		this.shipLocations = new ArrayList<Location>();
 	}
 	
-	public ArrayList<HashMap<String, Integer>> getShipLocations() {
+	
+	public ArrayList<Location> getShipLocations() {
 		return shipLocations;
 	}
 	
-	public void setShipLocations(ArrayList<HashMap<String, Integer>> shipLocations) {
+	public void setShipLocations(ArrayList<Location> shipLocations) {
 		this.shipLocations = shipLocations;
 	}
 	
