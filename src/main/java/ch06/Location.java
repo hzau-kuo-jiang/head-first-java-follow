@@ -3,36 +3,24 @@ package ch06;
 import java.util.HashMap;
 
 public class Location {
-	/*private String row;
-	private String column;
-	private String startToRightAvailable;
-	private String startToBottomAvailable;
-	private String hasShip;
-	private final Integer rowIndex;
-	private final Integer colIndex;
-	private final Integer startToRightAvailableValue;
-	private final Integer startToBottomAvailableValue;
-	private final Integer hasShipValue;
-	private final HashMap<String, Integer> location;
-	
-	public Location(Integer rowIndex, Integer colIndex, Integer startToRightAvailableValue, Integer startToBottomAvailableValue, Integer hasShipValue) {
-		this.rowIndex = rowIndex;
-		this.colIndex = colIndex;
-		this.startToRightAvailableValue = startToRightAvailableValue;
-		this.startToBottomAvailableValue = startToBottomAvailableValue;
-		this.hasShipValue = hasShipValue;
-		this.location = new HashMap<String, Integer>();
-		this.location.put("row", rowIndex);
-		this.location.put("column", colIndex);
-		this.location.put("startToRightAvailable", startToRightAvailableValue);
-		this.location.put("startToBottomAvailable", startToBottomAvailableValue);
-		this.location.put("hasShip", hasShipValue);
-	}*/
 	
 	private final HashMap<String, Integer> location;
 	
 	public Location() {
 		this.location = new HashMap<String, Integer>();
+	}
+	
+	public Location(int rowIndex, int colIndex) {
+		this.location = new HashMap<String, Integer>();
+		setRowIndex(rowIndex);
+		setColIndex(colIndex);
+		
+		int startToRightAvailable = colIndex < GameHelper.MaxColumnToRight ? 1 : 0;
+		int startToBottomAvailable = rowIndex < GameHelper.MaxRowToBottom ? 1 : 0;
+		setStartToRightAvailableValue(startToRightAvailable);
+		setStartToBottomAvailableValue(startToBottomAvailable);
+		
+		setHasShipValue(0);
 	}
 	
 	public Integer getRowIndex() {
@@ -71,8 +59,35 @@ public class Location {
 		return location.get("hasShip");
 	}
 	
+	/*
+	private Location initGridLocation(int rowIndex, int colIndex) {
+		Location gridLocation = new Location();
+		
+		gridLocation.setRowIndex(rowIndex);
+		gridLocation.setColIndex(colIndex);
+		
+		int startToRightAvailable = colIndex < MaxColumnToRight ? 1 : 0;
+		int startToBottomAvailable = rowIndex < MaxRowToBottom ? 1 : 0;
+		gridLocation.setStartToRightAvailableValue(startToRightAvailable);
+		gridLocation.setStartToBottomAvailableValue(startToBottomAvailable);
+		
+		gridLocation.setHasShipValue(0);
+		
+		return gridLocation;
+	}
+	* */
+	
 	public void setHasShipValue(Integer hasShipValue) {
 		location.put("hasShip", hasShipValue);
 	}
 	
+	public String toString() {
+		String row = String.valueOf((char) (GameHelper.START_LETTER.charAt(0) + getRowIndex()));
+		String column = String.valueOf(GameHelper.START_NUMBER + getColIndex());
+		String startToRightAvailable = getStartToRightAvailableValue() == 1 ? "👉" : "❌";
+		String startToBottomAvailable = getStartToBottomAvailableValue() == 1 ? "⬇\uFE0F" : "❌";
+		String hasShip = getHasShipValue() == 1 ? "🚢" : "\uD83D\uDCA7";
+		
+		return String.format("%s%s(%s,%s,%s)", row, column, startToRightAvailable, startToBottomAvailable, hasShip) + "  ";
+	}
 }

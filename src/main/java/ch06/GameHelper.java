@@ -4,29 +4,29 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class GameHelper {
-	private static final String START_LETTER = "a";
-	private static final int START_NUMBER = 1;
-	private static final int ROW_LENGTH = 5;
-	private static final int COLUMN_LENGTH = 7;
-	private static final int SHIP_LENGTH = 3;
-	private static final String[] DIRECTIONS = {"toRight", "toBottom"};
-	private final int MaxRowToRight = ROW_LENGTH;
-	private final int MaxColumnToRight = COLUMN_LENGTH - SHIP_LENGTH + 1;
-	private final int MaxRowToBottom = ROW_LENGTH - SHIP_LENGTH + 1;
-	private final int MaxColumnToBottom = COLUMN_LENGTH;
+	public static final String START_LETTER = "a";
+	public static final int START_NUMBER = 1;
+	public static final int ROW_LENGTH = 5;
+	public static final int COLUMN_LENGTH = 7;
+	public static final int SHIP_LENGTH = 3;
+	public static final String[] DIRECTIONS = {"toRight", "toBottom"};
+	public static final int MaxColumnToRight = COLUMN_LENGTH - SHIP_LENGTH + 1;
+	public static final int MaxRowToBottom = ROW_LENGTH - SHIP_LENGTH + 1;
+	public final int MaxRowToRight = ROW_LENGTH;
+	public final int MaxColumnToBottom = COLUMN_LENGTH;
 	
 	public static void main(String[] args) {
 		GameHelper helper = new GameHelper();
 		ArrayList<Location> grid = helper.initGrid();
-		helper.renderGrid(grid);
+		/*		helper.renderGrid(grid);*/
 		
 		ArrayList<Location> startLocationsToRight = new ArrayList<Location>();
 		ArrayList<Location> startLocationsToBottom = new ArrayList<Location>();
 		
 		helper.initStartLocations(grid, startLocationsToRight, startLocationsToBottom);
 		
-		helper.renderGrid(startLocationsToRight);
-		helper.renderGrid(startLocationsToBottom);
+	/*	helper.renderGrid(startLocationsToRight);
+		helper.renderGrid(startLocationsToBottom);*/
 		
 		
 		Random random = new Random();
@@ -57,9 +57,17 @@ public class GameHelper {
 			helper.renderGrid(ship.getShipLocations());
 		}
 		
+		LocationList newGrid = new LocationList();
+		newGrid.addShip(1, 2);
+		
+		StartLocationsToRight startLocationsToRight1 = new StartLocationsToRight();
+		System.out.println(startLocationsToRight1);
+		
+		StartLocationsToBottom startLocationsToBottom1 = new StartLocationsToBottom();
+		System.out.println(startLocationsToBottom1);
 	}
 	
-	
+	//	finish reconstructing this method
 	private void initStartLocations(ArrayList<Location> grid, ArrayList<Location> startLocationsToRight, ArrayList<Location> startLocationsToBottom) {
 		for (Location gridLocation : grid) {
 			if (gridLocation.getStartToRightAvailableValue() == 1) {
@@ -121,6 +129,7 @@ public class GameHelper {
 	}
 	
 	
+	//	finish reconstructing this method
 	private ArrayList<Location> addShipToGrid(ArrayList<Location> grid, int rowIndex, int colIndex) {
 		ArrayList<Location> shipLocations = new ArrayList<Location>();
 		
@@ -134,38 +143,24 @@ public class GameHelper {
 		return shipLocations;
 	}
 	
+	//	finish reconstructing this method
 	private ArrayList<Location> initGrid() {
 		ArrayList<Location> grid = new ArrayList<Location>();
 		for (int rowIndex = 0; rowIndex < ROW_LENGTH; rowIndex++) {
 			for (int colIndex = 0; colIndex < COLUMN_LENGTH; colIndex++) {
-				grid.add(initGridLocation(rowIndex, colIndex));
+				grid.add(new Location(rowIndex, colIndex));
 			}
 		}
 		
 		return grid;
 	}
 	
-	
-	private Location initGridLocation(int rowIndex, int colIndex) {
-		Location gridLocation = new Location();
-		
-		gridLocation.setRowIndex(rowIndex);
-		gridLocation.setColIndex(colIndex);
-		
-		int startToRightAvailable = colIndex < MaxColumnToRight ? 1 : 0;
-		int startToBottomAvailable = rowIndex < MaxRowToBottom ? 1 : 0;
-		gridLocation.setStartToRightAvailableValue(startToRightAvailable);
-		gridLocation.setStartToBottomAvailableValue(startToBottomAvailable);
-		
-		gridLocation.setHasShipValue(0);
-		
-		return gridLocation;
-	}
-	
+	//	finish reconstructing this method
 	private void renderGrid(ArrayList<Location> grid) {
 		for (int i = 0; i < grid.size(); i++) {
 			Location gridLocation = grid.get(i);
-			System.out.print(renderGridLocation(gridLocation));
+			
+			System.out.print(gridLocation);
 			
 			if (i < grid.size() - 1) {
 				Location nextGridLocation = grid.get(i + 1);
@@ -176,17 +171,6 @@ public class GameHelper {
 		}
 		
 		System.out.println("\n");
-	}
-	
-	private String renderGridLocation(Location gridLocation) {
-		String row = String.valueOf((char) (START_LETTER.charAt(0) + gridLocation.getRowIndex()));
-		String column = String.valueOf(START_NUMBER + gridLocation.getColIndex());
-		String startToRightAvailable = gridLocation.getStartToRightAvailableValue() == 1 ? "👉" : "❌";
-		String startToBottomAvailable = gridLocation.getStartToBottomAvailableValue() == 1 ? "⬇\uFE0F" : "❌";
-		String hasShip = gridLocation.getHasShipValue() == 1 ? "🚢" : "\uD83D\uDCA7";
-		
-		return String.format("%s%s(%s,%s,%s)", row, column, startToRightAvailable, startToBottomAvailable, hasShip) + "  ";
-		
 	}
 	
 	
